@@ -10,6 +10,17 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+  <header>
+    <% if session[:user_id] %>
+      <% user = User.find(session[:user_id]) %>
+      <p>ログイン中: <%= user.name %></p>
+      <%= link_to "ログアウト", session_path, method: :delete %>
+    <% else %>
+      <%= link_to "ログイン", new_session_path %>
+      <%= link_to "新規登録", new_user_path %>
+    <%   end %>
+  </header>
+
   <body>
     <%= yield %>
   </body>
