@@ -1,0 +1,10 @@
+<h1><%= @room.name %></h1>
+
+<p><%= @room.description %></p>
+<p>宿泊料金: ¥<%= @room.price %> /日</p>
+<p>住所: <%= @room.address %></p>
+<p>作成日: <%= @room.created_at.strftime("%Y/%m/%d") %></p>
+
+<%= link_to "編集する", edit_room_path(@room) %>
+<%= link_to "削除する", room_path(@room), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+<%= link_to "施設一覧に戻る", rooms_path %>

@@ -1,0 +1,25 @@
+<h1>施設一覧</h1>
+
+<%= form_with url: rooms_path, method: :get, local: true do %>
+  <div>
+    <%= text_field_tag :search, params[:search], placeholder: "エリアを検索" %>
+    <%= submit_tag "検索" %>
+  </div>
+<% end %>
+
+<% if @rooms.any? %>
+  <% @rooms.each do |room| %>
+    <div>
+      <h2><%= link_to room.name, room_path(room) %></h2>
+      <p><%= room.description.truncate(100) %></p>
+      <p>宿泊料金: ¥<%= room.price %> /日</p>
+      <p>作成日: <%= room.created_at.strftime("%Y/%m/%d") %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>登録された施設がありません。</p>
+<% end %>
+
+<%= link_to "新しい施設を登録する", new_room_path %>
+
+

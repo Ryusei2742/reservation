@@ -1,9 +1,14 @@
-class Reservation < ApplicationRecord
+class Room < ApplicationRecord
   belongs_to :user
   belongs_to :room
   validates :check_in, :check_out, presence: true
   validate :check_in_after_today, :check_out_after_check_in
   validates :guests, numericality: { greater_than: 0 }
+  belongs_to :user
+  has_many :reservations, dependent: :destroy
+
+  validates :name, :description, :address, presence: true
+  validates :price, numericality: { greater_than: 0 }
 
   private
 
