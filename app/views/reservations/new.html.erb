@@ -1,6 +1,6 @@
 <h1><%= @room.name %>の予約</h1>
 
-<%= form_with model: @reservation, local: true do |f| %>
+<%= form_with model: @reservation, url: room_reservations_path(@room), local: true do |f| %>
   <div>
     <%= f.label :check_in, "チェックイン日" %>
     <%= f.date_field :check_in %>

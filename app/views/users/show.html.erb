@@ -1,4 +1,8 @@
 <h1>アカウント情報</h1>
+<%= image_tag(@user.icon&.url || asset_path("deuserfault-avatar-7a6cbfd7993e89f24bfc888f4a035a83c6f1428b8bdc47eed9095f2799a40153.png"), alt: "アイコン画像") %>
 <p>名前: <%= @user.name %></p>
 <p>メールアドレス: <%= @user.email %></p>
 <p>パスワード: *********</p>
+<p>自己紹介: <%= @user.bio.present? ? @user.bio : "自己紹介が未設定です。" %></p>
+
+<%= link_to "アカウント情報を編集", edit_user_path(@user) %>

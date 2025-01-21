@@ -11,14 +11,16 @@
   </head>
 
   <header>
-    <% if session[:user_id] %>
-      <% user = User.find(session[:user_id]) %>
-      <p>ログイン中: <%= user.name %></p>
-      <%= link_to "ログアウト", session_path, method: :delete %>
+    <%= link_to "ホーム", root_path %>
+    <% if logged_in? %>
+    <%= link_to "ユーザーページ", user_path(current_user) %>
+    <%= link_to "予約一覧", reservations_path %>
+      <p>ログイン中: <%= current_user.name %></p>
+      <%= button_to "ログアウト", session_path, method: :delete, data: { confirm: "ログアウトしますか？" } %>
     <% else %>
       <%= link_to "ログイン", new_session_path %>
       <%= link_to "新規登録", new_user_path %>
-    <%   end %>
+    <% end %>
   </header>
 
   <body>

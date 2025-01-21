@@ -4,9 +4,9 @@ class RoomsController < ApplicationController
 
   def index
     if params[:search].present?
-      @rooms = Room.where("address ILIKE ?", "%#{params[:search]}%")
+      @rooms = Room.where("LOWER(address) LIKE ?", "%#{params[:search].downcase}%")
     else
-      @rooms = current_user.rooms
+      @rooms = logged_in? ? current_user.rooms : Room.all
     end
   end
 
@@ -49,6 +49,6 @@ class RoomsController < ApplicationController
   end
 
   def room_params
-    params.require(:room).permit(:name, :description, :price, :address)
+    params.require(:room).permit(:name, :description, :price, :address, :image)
   end
 end
