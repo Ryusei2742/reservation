@@ -11,17 +11,27 @@
   </head>
 
   <header>
-    <%= link_to "ホーム", root_path %>
-    <% if logged_in? %>
-    <%= link_to "ユーザーページ", user_path(current_user) %>
-    <%= link_to "予約一覧", reservations_path %>
-      <p>ログイン中: <%= current_user.name %></p>
-      <%= button_to "ログアウト", session_path, method: :delete, data: { confirm: "ログアウトしますか？" } %>
-    <% else %>
-      <%= link_to "ログイン", new_session_path %>
-      <%= link_to "新規登録", new_user_path %>
-    <% end %>
+    <nav>
+      <%= link_to "ホーム", root_path %>
+      <% if logged_in? %>
+        <div class="dropdown">
+          <div class="dropdown-toggle">
+            <%= image_tag(current_user.icon_url, alt: "アイコン画像", class: "user-icon") %>
+            <%= link_to current_user.name, "#", class: "user-name", id: "userDropdown" %>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <%= link_to "プロフィール", user_path(current_user), class: "dropdown-item" %>
+            <%= link_to "予約一覧", reservations_path, class: "dropdown-item" %>
+            <%= link_to "ログアウト", session_path, method: :delete, class: "dropdown-item" %>
+          </div>
+        </div>
+      <% else %>
+        <%= link_to "ログイン", new_session_path, class: "nav-link" %>
+        <%= link_to "新規登録", new_user_path, class: "nav-link" %>
+      <% end %>
+    </nav>
   </header>
+
 
   <body>
     <%= yield %>
