@@ -1,13 +1,9 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :edit, :update, :destroy]
-  before_action :require_login, except: [:index, :show]
+  before_action :require_login
 
   def index
-    if params[:search].present?
-      @rooms = Room.where("LOWER(address) LIKE ?", "%#{params[:search].downcase}%")
-    else
-      @rooms = logged_in? ? current_user.rooms : Room.all
-    end
+    @rooms = current_user.rooms
   end
 
   def show
@@ -42,6 +38,18 @@ class RoomsController < ApplicationController
     redirect_to rooms_path, notice: "施設を削除しました。"
   end
 
+  def search
+    if params[:area].present?
+      @rooms = Room.where("address LIKE ?", "%#{params[:area]}%")
+    elsif params[:query].present?
+      @rooms = Room.where("name LIKE :query OR description LIKE :query", query: "%#{params[:query]}%")
+    else
+      @rooms = Room.none
+    end
+
+    @total_count = @rooms.count
+  end
+
   private
 
   def set_room
@@ -50,5 +58,9 @@ class RoomsController < ApplicationController
 
   def room_params
     params.require(:room).permit(:name, :description, :price, :address, :image)
+  end
+
+  def require_login
+    redirect_to new_session_path, alert: "ログインしてください。" unless logged_in?
   end
 end

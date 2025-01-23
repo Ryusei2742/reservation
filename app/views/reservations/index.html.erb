@@ -3,7 +3,19 @@
 <% if @reservations.any? %>
   <% @reservations.each do |reservation| %>
     <div>
-      <h2><%= link_to reservation.room.name, reservation_path(reservation) %></h2>
+      <%# 施設画像 %>
+      <% if reservation.room&.image.present? %>
+        <%= image_tag reservation.room.image_url, alt: "施設画像" %>
+      <% else %>
+        <%= image_tag "deyadofault-image-4e0ac6b8d01335b5b22fe6586af13644ae51dddb6aeabf35b9174e80f13cd09d.png", alt: "デフォルト施設画像" %>
+      <% end %>
+
+      <% if reservation.room.present? %>
+        <h2><%= link_to reservation.room.name, reservation_path(reservation) %></h2>
+        <p><%= reservation.room.description %></p>
+      <% else %>
+        <p>この予約には関連付けられた施設がありません。</p>
+      <% end %>
       <p>チェックイン日: <%= reservation.check_in.strftime("%Y/%m/%d") %></p>
       <p>チェックアウト日: <%= reservation.check_out.strftime("%Y/%m/%d") %></p>
       <p>人数: <%= reservation.guests %>人</p>

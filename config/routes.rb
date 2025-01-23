@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   resources :rooms do
     resources :reservations, only: [:new, :create]
+    collection do
+      get :search
+    end
   end
 
   resources :reservations, only: [:index, :show]

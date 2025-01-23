@@ -1,0 +1,15 @@
+<h1>施設検索結果</h1>
+
+<% if @rooms.any? %>
+  <p>検索結果: <%= @total_count %> 件見つかりました。</p>
+  <% @rooms.each do |room| %>
+    <div>
+      <h2><%= link_to room.name, room_path(room) %></h2>
+      <p>住所: <%= room.address %></p>
+      <p>詳細: <%= room.description %></p>
+      <p>宿泊料金: ¥<%= room.price %> /日</p>
+    </div>
+  <% end %>
+<% else %>
+  <p>該当する施設が見つかりませんでした。</p>
+<% end %>
