@@ -16,6 +16,7 @@ class ReservationsController < ApplicationController
   def create
     @reservation = current_user.reservations.build(reservation_params)
     @reservation.room = @room
+    @reservation.user = current_user
     if @reservation.save
       redirect_to @reservation, notice: "予約が完了しました。"
     else

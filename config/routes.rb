@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root "rooms#index"
 
   resources :rooms do
-    resources :reservations, only: [:new, :create]
+    resources :reservations, only: [:new, :create, :index]
     collection do
       get :search
     end
