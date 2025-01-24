@@ -4,7 +4,7 @@ class Reservation < ApplicationRecord
 
   validates :check_in, :check_out, :guests, presence: true
   validate :check_in_after_today, :check_out_after_check_in
-
+  validates :guests, presence: true, numericality: { greater_than_or_equal_to: 1, only_integer: true }
 
   def total_price
     days = (check_out - check_in).to_i

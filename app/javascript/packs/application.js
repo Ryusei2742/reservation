@@ -8,6 +8,8 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "./dropdown"
+import "bootstrap"
+import "bootstrap/dist/css/bootstrap.min.css"
 
 
 Rails.start()
