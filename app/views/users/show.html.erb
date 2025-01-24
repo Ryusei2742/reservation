@@ -1,5 +1,5 @@
 <h1>アカウント情報</h1>
-<%= image_tag(@user.icon&.url || asset_path("deuserfault-avatar-7a6cbfd7993e89f24bfc888f4a035a83c6f1428b8bdc47eed9095f2799a40153.png"), alt: "アイコン画像") %>
+<%= image_tag(@user.icon_url, alt: "アイコン画像") %>
 <p>名前: <%= @user.name %></p>
 <p>メールアドレス: <%= @user.email %></p>
 <p>パスワード: *********</p>

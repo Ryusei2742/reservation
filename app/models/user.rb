@@ -7,7 +7,13 @@ class User < ApplicationRecord
   has_one_attached :icon
   validates :bio, length: { maximum: 500 }, allow_blank: true
 
+  include Rails.application.routes.url_helpers
+
   def icon_url
-    icon.present? ? icon.url : ActionController::Base.helpers.asset_path("deuserfault-avatar-7a6cbfd7993e89f24bfc888f4a035a83c6f1428b8bdc47eed9095f2799a40153.png")
+    if icon.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(icon, only_path: true)
+    else
+      ActionController::Base.helpers.asset_path("default-avatar.png")
+    end
   end
 end
