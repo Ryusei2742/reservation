@@ -1,0 +1,32 @@
+<h1>アカウント情報編集</h1>
+
+<% if @user.errors.any? %>
+  <div class="alert alert-danger">
+    <h2>エラーが発生しました:</h2>
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @user, url: update_account_user_path(@user), local: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :email, "メールアドレス", class: "form-label" %>
+    <%= f.email_field :email, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :password, "新しいパスワード（空欄の場合は変更なし）", class: "form-label" %>
+    <%= f.password_field :password, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :password_confirmation, "新しいパスワード確認", class: "form-label" %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
+  </div>
+
+  <%= f.submit "更新する", class: "btn btn-primary" %>
+  <%= link_to "キャンセル", user_path(@user), class: "btn btn-secondary" %>
+<% end %>

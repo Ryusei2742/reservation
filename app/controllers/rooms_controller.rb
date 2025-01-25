@@ -18,6 +18,7 @@ class RoomsController < ApplicationController
     if @room.save
       redirect_to @room, notice: "施設が登録されました。"
     else
+      flash.now[:danger] = "施設の登録に失敗しました。入力内容を確認してください。"
       render :new, status: :unprocessable_entity
     end
   end

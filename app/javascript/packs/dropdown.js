@@ -1,20 +1,17 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const dropdownToggle = document.getElementById("userDropdown");
+document.addEventListener("turbolinks:load", function () {
+  const userDropdown = document.getElementById("userDropdown");
   const dropdownMenu = document.getElementById("dropdownMenu");
 
-  if (dropdownToggle && dropdownMenu) {
-    dropdownToggle.addEventListener("click", (e) => {
-      e.preventDefault();
+  if (userDropdown && dropdownMenu) {
+    userDropdown.addEventListener("click", function (event) {
+      event.preventDefault();
       dropdownMenu.classList.toggle("show");
     });
 
-    // メニュー外をクリックするとドロップダウンを閉じる
-    document.addEventListener("click", (e) => {
-      if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    document.addEventListener("click", function (event) {
+      if (!userDropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
         dropdownMenu.classList.remove("show");
       }
     });
-  } else {
-    console.error("Dropdown elements not found: userDropdown or dropdownMenu");
   }
 });

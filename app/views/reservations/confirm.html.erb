@@ -1,0 +1,44 @@
+<h1 class="text-center mt-4">予約内容確認</h1>
+
+<div class="card shadow-sm mx-auto mt-4" style="max-width: 600px;">
+  <div class="card-body">
+    <h5 class="card-title text-center"><%= @room.name %></h5>
+
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>チェックイン日</th>
+          <td><%= @reservation.check_in.strftime("%Y/%m/%d") %></td>
+        </tr>
+        <tr>
+          <th>チェックアウト日</th>
+          <td><%= @reservation.check_out.strftime("%Y/%m/%d") %></td>
+        </tr>
+        <tr>
+          <th>宿泊日数</th>
+          <td><%= @days %> 日</td>
+        </tr>
+        <tr>
+          <th>人数</th>
+          <td><%= @reservation.guests %> 人</td>
+        </tr>
+        <tr>
+          <th>合計料金</th>
+          <td class="fw-bold text-danger">¥<%= @total_price %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between">
+      <%= link_to "戻る", new_room_reservation_path(@room), class: "btn btn-secondary" %>
+
+      <%= form_with model: @reservation, url: room_reservations_path(@room), method: :post, local: true do |f| %>
+        <%= f.hidden_field :check_in, value: @reservation.check_in %>
+        <%= f.hidden_field :check_out, value: @reservation.check_out %>
+        <%= f.hidden_field :guests, value: @reservation.guests %>
+        <%= f.hidden_field :room_id, value: @room.id %>
+        <%= f.submit "予約を確定", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,30 +1,63 @@
-<h1>予約一覧</h1>
+<h1 class="text-center mt-4">予約一覧</h1>
 
 <% if @reservations.any? %>
-  <% @reservations.each do |reservation| %>
-    <div>
-      <%# 施設画像 %>
-      <% if reservation.room&.image.present? %>
-        <%= image_tag reservation.room.image_url, alt: "施設画像" %>
-      <% else %>
-        <%= image_tag "default-room.png", alt: "デフォルト施設画像" %>
-      <% end %>
+  <div class="row">
+    <% @reservations.each do |reservation| %>
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <% if reservation.room&.image.attached? %>
+                <%= image_tag reservation.room.image, class: "img-fluid rounded-start", alt: "施設画像" %>
+              <% else %>
+                <%= image_tag "default-room.png", class: "img-fluid rounded-start", alt: "デフォルト施設画像" %>
+              <% end %>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <% if reservation.room.present? %>
+                  <h5 class="card-title"><%= link_to reservation.room.name, room_path(reservation.room), class: "text-decoration-none text-dark" %></h5>
+                  <p class="card-text text-muted"><%= reservation.room.description.truncate(80) %></p>
+                <% else %>
+                  <p class="text-danger">この予約には関連付けられた施設がありません。</p>
+                <% end %>
 
-      <% if reservation.room.present? %>
-        <h2><%= link_to reservation.room.name, reservation_path(reservation) %></h2>
-        <p><%= reservation.room.description %></p>
-      <% else %>
-        <p>この予約には関連付けられた施設がありません。</p>
-      <% end %>
-      <p>チェックイン日: <%= reservation.check_in.strftime("%Y/%m/%d") %></p>
-      <p>チェックアウト日: <%= reservation.check_out.strftime("%Y/%m/%d") %></p>
-      <p>人数: <%= reservation.guests %>人</p>
-      <p>予約確定日時: <%= reservation.created_at.strftime("%Y/%m/%d %H:%M") %></p>
+                <table class="table table-sm mt-3">
+                  <tbody>
+                    <tr>
+                      <th>チェックイン</th>
+                      <td><%= reservation.check_in.strftime("%Y/%m/%d") %></td>
+                    </tr>
+                    <tr>
+                      <th>チェックアウト</th>
+                      <td><%= reservation.check_out.strftime("%Y/%m/%d") %></td>
+                    </tr>
+                    <tr>
+                      <th>人数</th>
+                      <td><%= reservation.guests %>人</td>
+                    </tr>
+                    <tr>
+                      <th>予約確定日時</th>
+                      <td><%= reservation.created_at.strftime("%Y/%m/%d %H:%M") %></td>
+                    </tr>
+                    <tr>
+                      <% days = (reservation.check_out - reservation.check_in).to_i %>
+                      <th>合計料金</th>
+                      <td class="fw-bold text-danger">¥<%= reservation.room.price * days * reservation.guests %></td>
+                    </tr>
+                  </tbody>
+                </table>
 
-      <% days = (reservation.check_out - reservation.check_in).to_i %>
-      <p>合計料金: ¥<%= reservation.room.price * days * reservation.guests %></p>
-    </div>
-  <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 <% else %>
-  <p>予約がありません。</p>
+  <div class="text-center mt-5">
+    <p class="text-muted">予約がありません。</p>
+    <%= link_to "ホームへ戻る", root_path, class: "btn btn-primary mt-3" %>
+  </div>
 <% end %>

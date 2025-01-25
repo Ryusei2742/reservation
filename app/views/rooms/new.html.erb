@@ -1,5 +1,16 @@
 <h1>施設を登録する</h1>
 
+<% if @room.errors.any? %>
+  <div class="alert alert-danger">
+    <strong>入力内容に誤りがあります。修正してください。</strong>
+    <ul>
+      <% @room.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <%= form_with model: @room, local: true do |f| %>
   <div>
     <%= f.label :name, "施設名" %>

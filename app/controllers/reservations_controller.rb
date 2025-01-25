@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
-  before_action :set_room, only: [:new, :create]
+  before_action :set_room, only: [:new, :confirm, :create]
   before_action :set_reservation, only: [:show]
+  before_action :require_login
 
   def index
     @reservations = current_user.reservations.includes(:room)
@@ -14,15 +15,37 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    @reservation = current_user.reservations.build(reservation_params)
-    @reservation.room = @room
+    @room = Room.find(params[:room_id])
+    @reservation = @room.reservations.new(reservation_params)
     @reservation.user = current_user
+
     if @reservation.save
-      redirect_to @reservation, notice: "予約が完了しました。"
+      redirect_to reservation_path(@reservation), notice: "予約が完了しました。"
     else
-      render :new, status: :unprocessable_entity
+      flash[:alert] = "予約の確定に失敗しました。"
+      render :confirm
     end
   end
+
+  def confirm
+    @room = Room.find(params[:room_id])
+    @reservation = Reservation.new(reservation_params)
+
+    if @reservation.check_in.present? && @reservation.check_out.present?
+      @days = (@reservation.check_out - @reservation.check_in).to_i
+    else
+      @days = 0
+    end
+
+    if @days.positive? && @reservation.guests.present?
+      @total_price = @room.price * @days * @reservation.guests
+    else
+      @total_price = 0
+    end
+
+    render :confirm
+  end
+
 
   private
 
@@ -35,6 +58,6 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:check_in, :check_out, :guests)
+    params.require(:reservation).permit(:check_in, :check_out, :guests, :room_id)
   end
 end
