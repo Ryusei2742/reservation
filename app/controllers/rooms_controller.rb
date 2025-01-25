@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :edit, :update, :destroy]
-  before_action :require_login
+  before_action :require_login, except: [:index, :show, :search]
 
   def index
     @rooms = current_user.rooms
@@ -39,12 +39,14 @@ class RoomsController < ApplicationController
   end
 
   def search
+    @rooms = Room.all
+
     if params[:area].present?
-      @rooms = Room.where("address LIKE ?", "%#{params[:area]}%")
-    elsif params[:query].present?
-      @rooms = Room.where("name LIKE :query OR description LIKE :query", query: "%#{params[:query]}%")
-    else
-      @rooms = Room.none
+      @rooms = @rooms.where("address LIKE ?", "%#{params[:area]}%")
+    end
+
+    if params[:query].present?
+      @rooms = @rooms.where("name LIKE :query OR description LIKE :query", query: "%#{params[:query]}%")
     end
 
     @total_count = @rooms.count

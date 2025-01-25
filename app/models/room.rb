@@ -1,11 +1,18 @@
 class Room < ApplicationRecord
   belongs_to :user
   has_many :reservations, dependent: :destroy
+  has_one_attached :image
 
   validates :name, :description, :address, presence: true
   validates :price, numericality: { greater_than: 0 }
 
   def image_url
-    image.present? ? image.url : ActionController::Base.helpers.asset_path("deyadofault-image-4e0ac6b8d01335b5b22fe6586af13644ae51dddb6aeabf35b9174e80f13cd09d.png")
+    if image.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true)
+    else
+      ActionController::Base.helpers.asset_path("default-room.png")
+    end
+  rescue
+    ActionController::Base.helpers.asset_path("default-room.png")
   end
 end

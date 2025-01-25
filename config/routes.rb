@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "rooms#index"
+  root "pages#home"
 
   resources :rooms do
     resources :reservations, only: [:new, :create, :index]

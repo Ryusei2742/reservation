@@ -1,0 +1,24 @@
+<h1 class="text-center mt-5">ようこそ ReservationApp へ！</h1>
+<p class="lead text-center">宿泊施設を簡単に管理・予約しましょう。</p>
+
+<div class="text-center mt-4">
+  <% if logged_in? %>
+    <%= link_to "施設一覧を見る", rooms_path, class: "btn btn-primary btn-lg" %>
+    <%= link_to "予約一覧を見る", reservations_path, class: "btn btn-secondary btn-lg" %>
+  <% else %>
+    <div class="search-box text-center mt-4">
+      <%= form_with url: search_rooms_path, method: :get, local: true, class: "search-form" do |f| %>
+        <%= f.text_field :query, placeholder: "施設名または詳細で検索", class: "form-control d-inline-block w-50" %>
+        <%= f.submit "検索", class: "btn btn-primary mt-2" %>
+      <% end %>
+    </div>
+
+    <h2 class="text-center mt-5">おすすめエリア</h2>
+    <div class="d-flex justify-content-center gap-4 mt-3">
+      <%= link_to "東京の宿泊施設", search_rooms_path(query: "東京"), class: "btn btn-outline-dark" %>
+      <%= link_to "大阪の宿泊施設", search_rooms_path(query: "大阪"), class: "btn btn-outline-dark" %>
+      <%= link_to "京都の宿泊施設", search_rooms_path(query: "京都"), class: "btn btn-outline-dark" %>
+      <%= link_to "札幌の宿泊施設", search_rooms_path(query: "札幌"), class: "btn btn-outline-dark" %>
+    </div>
+  <% end %>
+</div>
