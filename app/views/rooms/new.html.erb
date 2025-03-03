@@ -1,0 +1,43 @@
+<h1>施設を登録する</h1>
+
+<% if @room.errors.any? %>
+  <div class="alert alert-danger">
+    <strong>入力内容に誤りがあります。修正してください。</strong>
+    <ul>
+      <% @room.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @room, local: true do |f| %>
+  <div>
+    <%= f.label :name, "施設名" %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description, "施設詳細" %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.label :price, "宿泊料金" %>
+    <%= f.number_field :price %>
+  </div>
+
+  <div>
+    <%= f.label :address, "住所" %>
+    <%= f.text_field :address %>
+  </div>
+
+  <div>
+    <%= f.label :image, "施設画像" %>
+    <%= f.file_field :image %>
+  </div>
+
+  <div>
+    <%= f.submit "登録する" %>
+  </div>
+<% end %>

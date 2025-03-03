@@ -1,0 +1,35 @@
+<h1>施設一覧</h1>
+
+<%= form_with url: search_rooms_path, method: :get, local: true do |f| %>
+  <%= f.select :area, ["東京", "大阪", "京都", "札幌"], { include_blank: "エリアを選択" }, class: "area-select" %>
+  <%= f.text_field :query, placeholder: "施設名または詳細で検索", class: "search-field" %>
+  <%= f.submit "検索", class: "search-button" %>
+<% end %>
+
+<div class="row">
+  <% if @rooms.any? %>
+    <% @rooms.each do |room| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <% if room.image.present? %>
+            <%= image_tag room.image_url, alt: "施設画像" %>
+          <% else %>
+            <%= image_tag "default-room.png", alt: "デフォルト施設画像" %>
+          <% end %>
+          <div class="card-body">
+            <h2><%= link_to room.name, room_path(room) %></h2>
+            <p>住所: <%= room.address %></p>
+            <p><%= room.description %></p>
+            <p>宿泊料金: ¥<%= room.price %> /日</p>
+            <p>作成日: <%= room.created_at.strftime("%Y/%m/%d") %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p>施設が登録されていません。</p>
+  <% end %>
+</div>
+
+<%= link_to "新しい施設を登録する", new_room_path %>
+

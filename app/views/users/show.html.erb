@@ -1,0 +1,9 @@
+<h1>アカウント情報</h1>
+<%= image_tag(@user.icon_url, alt: "アイコン画像") %>
+<p>名前: <%= @user.name %></p>
+<p>メールアドレス: <%= @user.email %></p>
+<p>パスワード: *********</p>
+<p>自己紹介: <%= @user.bio.present? ? @user.bio : "自己紹介が未設定です。" %></p>
+
+<%= link_to "アカウント情報を編集", edit_account_user_path(@user) %>
+<%= link_to "プロフィールを編集", edit_profile_user_path(@user) %>
